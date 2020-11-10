@@ -1,0 +1,26 @@
+{
+  "name": "imitate-twitter-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "koa": "^2.13.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^10.0.0",
+    "mongoose": "^5.10.13"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sertceps/imitateTwitterBackend.git"
+  },
+  "author": "Roc Har",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sertceps/imitateTwitterBackend/issues"
+  },
+  "homepage": "https://github.com/sertceps/imitateTwitterBackend#readme"
+}

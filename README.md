@@ -100,17 +100,17 @@
   - /friends
     - user_id
 
-# 初步 MySQL 表结构设计
+# 初步 MongooDB 表结构设计
 - t_user
   - userpk
   - userid
   - username
   - birthday
   - email
-  - post_id
+  - tweets
     - t_tweet
   - follow_id
-    - t_follow
+    - t_follow 
   - fan_id
     - t_fan
   - friend
