@@ -2,7 +2,13 @@ const { Schema, model } = require('mongoose')
 const userSchema = new Schema({
     userid: {
         type: String,
-        required: true
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true,
+        select: false
     },
     email: {
         type: String,
@@ -23,7 +29,38 @@ const userSchema = new Schema({
         default: ''
     },
     tweets: {
-        type: [String]
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Tweet',
+            select: false
+        }],
+    },
+    followers: {
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            select: false
+        }]
+    },
+    friends: {
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            select: false
+        }]
+    },
+    fans: {
+        type: Schema.Types.ObjectId,
+        ref: 'Fans',
+    },
+    blocks: {
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            select: false
+        }]
     }
+
 })
+
 module.exports = model('User', userSchema)

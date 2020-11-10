@@ -1,7 +1,12 @@
 
+const User = require('../models/User')
+
 class UserCtl {
+    // CRUD
     register = async (ctx) => {
-        ctx.body = { "message": "register success" }
+        const userinfo = ctx.request.body
+        const user = await new User(userinfo).save()
+        ctx.body = user
     }
     login = async (ctx) => {
         ctx.body = { "message": "login success" }

@@ -108,47 +108,25 @@
   - birthday
   - email
   - tweets
-    - t_tweet
-  - follow_id
-    - t_follow 
-  - fan_id
-    - t_fan
-  - friend
-    - t_friend
-  - block_id
-    - t_block
+    - t: Tweet
+  - followers
+    - t: User
+  - fans
+    - t: Fans
+  - friends
+    - t: User
+  - blocks
 
-- t_tweet
-  - tweetpk
-  - pkid (foreign key)
+- Tweet
   - content
   - images
-    - t_media
-    - mediatype: image
   - videos
-    - t_media
-    - mediatype: video
   - like_count
   - retweet_count
-- t_comment
-  - comment_id
-  - post_id
-  - connent
-  - images
-  - videos
-  - like_count
+  - comment
+    - t: Comment
+- Comment == Tweet
 
-- t_follow
-  - user_id
-  - follow_id
-- t_fan
-  - user_id
-  - fan_id
-- t_friend
-  - follow_id
-  - fan_id
-- t_blocklist
-  - user_id
-  - block_id
-
+- Fans
+  - 
 
