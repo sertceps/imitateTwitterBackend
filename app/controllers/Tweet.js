@@ -1,5 +1,5 @@
 class TweetCtl {
-    tweet = async (ctx) => {
+    setTweet = async (ctx) => {
         ctx.body = { "message": "tweet success" }
     }
 }

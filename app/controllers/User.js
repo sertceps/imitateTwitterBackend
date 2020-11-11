@@ -6,6 +6,7 @@ class UserCtl {
     register = async (ctx) => {
         const userinfo = ctx.request.body
         const user = await new User(userinfo).save()
+        console.log(user)
         ctx.body = user
     }
     login = async (ctx) => {
