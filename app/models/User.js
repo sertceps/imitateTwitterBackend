@@ -10,61 +10,75 @@ const userSchema = new Schema({
         required: true,
         unique: true
     },
-    password: {
-        type: String,
-        required: true,
+    info: {
+        password: {
+            type: String,
+            required: true,
+        },
+        nickname: {
+            type: String,
+        },
+        avatar_url: {
+            type: String,
+            default: '/public/avatars/default_avatar'
+        },
+        birthday: {
+            type: Date,
+            default: Date.now
+        },
+        location: {
+            type: String,
+        },
+        description: {
+            type: String,
+            default: ''
+        },
     },
-    nickname: {
-        type: String,
+    tweet: {
+        tweets: {
+            type: [{
+                type: Schema.Types.ObjectId,
+                ref: 'Tweet',
+                select: false
+            }],
+        },
+        likes: {
+            type: [
+                {
+                    type: Schema.Types.ObjectId,
+                    ref: 'Tweet',
+                    select: false
+                }
+            ]
+        },
     },
-    avatar_url: {
-        type: String,
-        default: '/public/avatars/default_avatar'
-    },
-    birthday: {
-        type: Date,
-        default: Date.now
-    },
-    location: {
-        type: String,
-    },
-    description: {
-        type: String,
-        default: ''
-    },
-    tweets: {
-        type: [{
+    relationship: {
+        follows: {
+            type: [{
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+                unique: true,
+            }]
+        },
+        friends: {
+            type: [{
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+                select: false
+            }]
+        },
+        fans: {
             type: Schema.Types.ObjectId,
-            ref: 'Tweet',
-            select: false
-        }],
-    },
-    follows: {
-        type: [{
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-            unique: true,
-        }]
-    },
-    friends: {
-        type: [{
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-            select: false
-        }]
-    },
-    fans: {
-        type: Schema.Types.ObjectId,
-        ref: 'Fan',
-    },
-    blocks: {
-        type: [{
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-            select: false
-        }]
+            ref: 'Fan',
+        },
+        blocks: {
+            type: [{
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+                select: false
+            }]
+        }
     }
-
 })
 
 module.exports = model('User', userSchema)

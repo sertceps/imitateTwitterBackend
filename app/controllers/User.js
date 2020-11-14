@@ -18,7 +18,7 @@ class UserCtl {
     }
 
     login = async (ctx) => {
-        const user = await User.findOne(ctx.request.body)
+        const user = await User.findOne({ userid: ctx.request.body.userid })
         if (!user) { ctx.throw(401, '用户名或密码错误') }
         const { _id, userid } = user
         const token = jwt.sign({ _id, userid }, 'secretKey')
@@ -74,7 +74,7 @@ class UserCtl {
         if (ctx.header.authorization == undefined) { ctx.throw(401, '登录错误') }
         const token = ctx.header.authorization.split(' ')[1]
         const { _id } = jwt.verify(token, 'secretKey')
-        const follows = await User.findById({ _id }).populate('follows').exec()
+        const follows = await User.findById(_id).populate('follows').exec()
         ctx.body = follows
     }
     getFans = async (ctx) => {

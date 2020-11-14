@@ -10,11 +10,10 @@ const {
 
 // 兼职转发
 router.post('/tweets', setTweet)
-// router.get('/tweets', getTweet)
-
-// router.post('/comments', setComment)
-// router.get('/comments', getComment)
-// router.post('/likes', updateLikes)
+router.get('/tweets/:id', getTweet)
+router.post('/comments/:id', setComment)
+router.get('/comments/:id', getComment)
+router.patch('/likes/:id', updateLikes)
 
 
 module.exports = router

@@ -5,36 +5,61 @@ const tweetSchema = new Schema({
         ref: 'User'
     },
     content: {
-        type: String,
-        required: true,
-    },
-    images: {
-        type: [{
+        text: {
+            type: String,
+            required: true,
+        },
+        images: {
+            type: [{
+                type: String
+            }],
+            maxlength: 4
+        },
+        video: {
             type: String
-        }],
-        maxlength: 4
+        },
+        retweet: {
+            type: Schema.Types.ObjectId,
+            ref: 'Tweet'
+        }
     },
-    video: {
-        type: String
-    },
-    likecount: {
-        type: Number,
-        default: 0,
-        min: 0
-    },
-    retweetcount: {
-        type: Number,
-        default: 0,
-        min: 0
+    info: {
+        likes: {
+            count: {
+                type: Number,
+                default: 0,
+                min: 0
+            },
+            likers: {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }
+        },
+        retweet: {
+            count: {
+                type: Number,
+                default: 0,
+                min: 0
+            }
+        },
     },
     comments: {
-        type: Schema.Types.ObjectId,
-        ref: 'Comment'
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Tweet'
+        }]
     },
-    isDel: {
-        type: Boolean,
-        default: 0,
-        select: false
+    flags: {
+        isComment: {
+            type: Boolean,
+            default: 0,
+            select: false
+        },
+        isDel: {
+            type: Boolean,
+            default: 0,
+            select: false
+        }
     }
 })
 module.exports = model('Tweet', tweetSchema)
