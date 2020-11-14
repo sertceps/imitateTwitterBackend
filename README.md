@@ -18,9 +18,9 @@
       "password":"***"
   }
   ```
-- 个人信息
+- 当前登录用户
   - GET
-  - /users
+  - /users/current
     - userid
   ```json
   {
@@ -33,6 +33,9 @@
     "register_day":""
   }
   ```
+- 获取单个用户
+  - GET
+  - /users/:userid
 - 关注
   - POST
   - /follows:useri

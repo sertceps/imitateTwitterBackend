@@ -13,10 +13,13 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true,
-        select: false
     },
     nickname: {
         type: String,
+    },
+    avatar_url: {
+        type: String,
+        default: '/public/avatars/default_avatar'
     },
     birthday: {
         type: Date,
@@ -25,7 +28,7 @@ const userSchema = new Schema({
     location: {
         type: String,
     },
-    intro: {
+    description: {
         type: String,
         default: ''
     },
@@ -36,11 +39,11 @@ const userSchema = new Schema({
             select: false
         }],
     },
-    followers: {
+    follows: {
         type: [{
             type: Schema.Types.ObjectId,
             ref: 'User',
-            select: false
+            unique: true,
         }]
     },
     friends: {
@@ -52,7 +55,7 @@ const userSchema = new Schema({
     },
     fans: {
         type: Schema.Types.ObjectId,
-        ref: 'Fans',
+        ref: 'Fan',
     },
     blocks: {
         type: [{

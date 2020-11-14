@@ -10,11 +10,11 @@ const {
 
 // 兼职转发
 router.post('/tweets', setTweet)
-router.get('/tweets', getTweet)
+// router.get('/tweets', getTweet)
 
-router.post('/comments', setComment)
-router.get('/comments', getComment)
-router.post('/likes', updateLikes)
+// router.post('/comments', setComment)
+// router.get('/comments', getComment)
+// router.post('/likes', updateLikes)
 
 
 module.exports = router
