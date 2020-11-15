@@ -4,30 +4,22 @@ const User = require('../models/User')
 
 class TweetCtl {
     setTweet = async (ctx) => {
-        if (ctx.header.authorization == undefined) { ctx.throw(401, '登录错误') }
-        const token = ctx.header.authorization.split(' ')[1]
-        const { _id } = jwt.verify(token, 'secretKey')
-        const user = await User.findById(_id)
+        const user = await User.findById(ctx.state.user_id)
         const tweet = new Tweet(ctx.request.body)
-        tweet.author = _id
+        tweet.author = ctx.state.user._id
         await tweet.save()
         user.tweet.tweets.push(tweet._id)
         await user.save()
         ctx.body = { "message": "tweet success" }
     }
     getTweet = async (ctx) => {
-        if (ctx.header.authorization == undefined) { ctx.throw(401, '登录错误') }
-        const token = ctx.header.authorization.split(' ')[1]
-        const { _id } = jwt.verify(token, 'secretKey')
         if (ctx.params.id) {
             const tweets = await Tweet.find({ author: ctx.params.id })
             ctx.body = tweets
         }
     }
     setComment = async (ctx) => {
-        if (ctx.header.authorization == undefined) { ctx.throw(401, '登录错误') }
-        const token = ctx.header.authorization.split(' ')[1]
-        const { _id } = jwt.verify(token, 'secretKey')
+        const _id = ctx.state.user._id
         const user = await User.findById(_id)
         const comment = new Tweet(ctx.request.body)
         comment.author = _id
@@ -41,7 +33,7 @@ class TweetCtl {
     }
     getComment = async (ctx) => {
         const tweet = await Tweet.findById(ctx.params.id).populate('comments').exec()
-        ctx.body = await tweet
+        ctx.body = tweet
     }
     updateLikes = async (ctx) => {
         const tweet = await Tweet.findById(ctx.params.id)
