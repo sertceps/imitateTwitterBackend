@@ -1,5 +1,6 @@
 const Router = require('koa-router')
 const router = new Router()
+const { auth } = require('../middleware/Auth')
 const {
     register,
     login,
@@ -13,11 +14,11 @@ const {
 
 router.post('/users', register)
 router.post('/login', login)
-router.get('/users/current', getCurrent)
+router.get('/users/current', auth, getCurrent)
 router.get('/users/:id', getUser)
-router.post('/follows/:id', followUser)
-router.patch('/follows/:id', unFollow)
-router.get('/follows', getFollows)
-router.get('/fans', getFans)
+router.post('/follows/:id', auth, followUser)
+router.patch('/follows/:id', auth, unFollow)
+router.get('/follows', auth, getFollows)
+router.get('/fans', auth, getFans)
 
 module.exports = router
