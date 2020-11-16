@@ -87,7 +87,7 @@
     "retweeters":10,
     "comments":5,
     "likers_url":"api.example.com/likers/:t_likers_id",
-    "reweeters_url":"api.example.com/retweets/:t_retweers_id",
+    "reweeters_url":"api.example.com/retweeters/:t_retweers_id",
     "comments_url":"api.example.com/comments/:t_comments_id",
     "is_comment":false,
     "is_del":false
@@ -95,8 +95,7 @@
 ```
 - 获取推文
   - GET 
-  - /tweets
-    - author_id & tweet_id
+  - /tweets/:tweet_id
 ```json
 {
   "_id":ObjectId,
@@ -110,11 +109,9 @@
     "likers":20,
     "retweeters":10,
     "comments":5,
-    "likers_url":"",
-    "reweeters_url":"",
-    "comments_url":"",
-    "is_comment":false,
-    "is_del":false
+    "likers_url":"/likers/:t_likers_id",
+    "reweeters_url":"/retweeters/:t_retweeters_id",
+    "comments_url":"/comments/:t_comments_id",
 }
 ```
 - 发表评论

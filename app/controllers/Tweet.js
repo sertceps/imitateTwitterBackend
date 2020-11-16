@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
-const Tweet = require('../models/Tweet')
-const User = require('../models/User')
+const Tweet = require('../models/Tweet/Tweet')
+const User = require('../models/User/User')
 
 class TweetCtl {
     setTweet = async (ctx) => {
