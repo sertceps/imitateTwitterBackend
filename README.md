@@ -2,43 +2,63 @@
 - 注册
   - POST
   - /users
-  ```json
+```json
   {
       "user_id":"Zhang san",
       "email":"example@gamil.com",
-      "birthday":""
   }
-  ```
+```
 - 登录
   - POST
   - /login
-  ```json
+  - request & response
+```json 
   {
       "id":"exampleID",
       "password":"***"
   }
-  ```
-- 当前登录用户
-  - GET
-  - /users/current
-    - userid
-  ```json
+
   {
-    "user_id":"",
-    "name":"",
-    "email":"",
-    "birth":"",
-    "location":"",
-    "intro":"",
-    "register_day":""
+    "token":""
   }
-  ```
-- 获取单个用户
+```
+
+- 首页
+- 用户资料
   - GET
   - /users/:userid
+  - rsponse   
+```json
+{
+  "_id": ObjectId,
+  "userid": "zhangsan",
+  "username": "zhan san",
+  "email": "zhangsan@foxmail.com",
+  "type": "USER",
+  "detail_info":{
+    "avatar_url": "/images/avatars/default.jpg",
+    "background_url":"/images/backgrounds/default.jpg",
+    "description":"",
+    "location": "San Francisco",
+    "website":"",
+    "birthday":"",
+  },
+  "tweets_url":"api.example.com/tweets/:t_tweet_r_id",
+  "liked_url": "api.example.com/liked/:t_liked_id",
+  "followers":0,
+  "following":20,
+  "followers_url": "https://api.example.com/followers/:t_followers_id",
+  "following_url": "https://api.example.com/following/:t_following_id",
+  "blocking__url": "https://api.exmaple.com/blocking/:t_blocking_id",
+  "url": "api.example.com/users/zhangsan",
+  "html_url": "example.com/zhangsan",
+  "created_at": "2008-01-14T04:33:35Z",
+  "updated_at": "2008-01-14T04:33:35Z"
+}
+```
 - 关注
   - POST
-  - /follows:useri
+  - /following/:userid
 - 获取关注
   - GET
   - /follows
@@ -53,27 +73,60 @@
 - 发表推文
   - POST
   - /tweets
-  ```json
-  {
-    "text":"",
-    "images":"",
-    "video":""
-  }
-  ```
+```json
+{
+  "_id":ObjectId,
+  "author":ObjectId,
+  "content":{
+    "text":"hahah",
+    "images":"["images/tweet/url"]",
+    "video":"/videos/url",
+    "retweet":ObjectId,
+    },
+    "likers":20,
+    "retweeters":10,
+    "comments":5,
+    "likers_url":"api.example.com/likers/:t_likers_id",
+    "reweeters_url":"api.example.com/retweets/:t_retweers_id",
+    "comments_url":"api.example.com/comments/:t_comments_id",
+    "is_comment":false,
+    "is_del":false
+}
+```
 - 获取推文
   - GET 
   - /tweets
     - author_id & tweet_id
+```json
+{
+  "_id":ObjectId,
+  "author":ObjectId,
+  "content":{
+    "text":"hahah",
+    "images":"["images/tweet/url"]",
+    "video":"/videos/url",
+    "retweet":ObjectId,
+    },
+    "likers":20,
+    "retweeters":10,
+    "comments":5,
+    "likers_url":"",
+    "reweeters_url":"",
+    "comments_url":"",
+    "is_comment":false,
+    "is_del":false
+}
+```
 - 发表评论
   - POST
   - /comments
-  ```json
+```json
   {
     "text":"",
     "images":"",
     "video":""
   }
-  ```
+```
 - 获取评论
   - GET
   - /comments
@@ -82,11 +135,9 @@
   - POST
   - /likes
     - author_id & post_id | comment_id
-    ```json
-    {
-      "likes_count":""
-    }
-    ```
+```json
+
+```
 
 # 初步 MongooDB 表结构设计
 - t_user
