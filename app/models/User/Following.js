@@ -5,7 +5,7 @@ const followingSchema = new Schema({
         type: String,
         unique: true
     },
-    following: {
+    list: {
         type: [{
             type: Schema.Types.ObjectId,
             ref: 'User'

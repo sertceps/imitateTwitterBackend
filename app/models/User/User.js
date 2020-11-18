@@ -52,24 +52,27 @@ const userSchema = new Schema({
     liked_url: {
         type: String
     },
-    followers: {
+    followers_count: {
         type: Number,
         default: 0,
         min: 0
     },
-    following: {
+    following_count: {
         type: Number,
         default: 0,
         min: 0,
     },
-    followers_url: {
-        type: String
+    following: {
+        type: Schema.Types.ObjectId,
+        ref: 'Following'
     },
-    following_url: {
-        type: String,
+    followers: {
+        type: Schema.Types.ObjectId,
+        ref: 'Follower'
     },
-    blocking_url: {
-        type: String,
+    blocking: {
+        type: Schema.Types.ObjectId,
+        ref: 'Blocking'
     },
     url: {
         type: String,
@@ -81,6 +84,6 @@ const userSchema = new Schema({
         type: Boolean,
         default: false
     }
-})
+}, { timestamps: true })
 
 module.exports = model('User', userSchema)

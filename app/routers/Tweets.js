@@ -1,6 +1,6 @@
 const Router = require('koa-router')
 const router = new Router()
-const { auth } = require('../middleware/Auth')
+const { auth } = require('../middleware/User')
 const {
     setTweet,
     getTweet,

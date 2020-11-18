@@ -5,7 +5,7 @@ const blockingSchema = new Schema({
         type: String,
         unique: true
     },
-    blocking: {
+    list: {
         type: [{
             type: Schema.Types.ObjectId,
             ref: 'User'

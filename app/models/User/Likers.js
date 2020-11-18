@@ -5,7 +5,7 @@ const likerSchema = new Schema({
         type: String,
         unique: true
     },
-    follower: {
+    list: {
         type: [{
             type: Schema.Types.ObjectId,
             ref: 'User'
