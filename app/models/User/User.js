@@ -46,11 +46,13 @@ const userSchema = new Schema({
             default: Date.now
         },
     },
-    tweets_url: {
-        type: String
+    tweets_r: {
+        type: Schema.Types.ObjectId,
+        ref: 'Tweet_r'
     },
-    liked_url: {
-        type: String
+    liked_r: {
+        type: Schema.Types.ObjectId,
+        ref: 'Liked'
     },
     followers_count: {
         type: Number,
@@ -62,23 +64,17 @@ const userSchema = new Schema({
         default: 0,
         min: 0,
     },
-    following: {
+    following_r: {
         type: Schema.Types.ObjectId,
         ref: 'Following'
     },
-    followers: {
+    followers_r: {
         type: Schema.Types.ObjectId,
         ref: 'Follower'
     },
-    blocking: {
+    blocking_r: {
         type: Schema.Types.ObjectId,
         ref: 'Blocking'
-    },
-    url: {
-        type: String,
-    },
-    html_url: {
-        type: String
     },
     isDel: {
         type: Boolean,

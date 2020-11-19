@@ -5,18 +5,24 @@ const {
     register,
     login,
     getUser,
-    followUser,
-    unFollow,
+    setFollowing,
+    unFollowing,
     getFollowing,
     getFollowers,
+    getBlocking,
+    setBlocking,
+    unBlocking,
 } = require('../controllers/User')
 
 router.post('/users', userEmailExisted, register)
 router.post('/login', login)
 router.get('/users/:userid', useridNotExist, getUser)
-router.put('/following/:id', auth, userNotExist, followUser)
-router.delete('/following/:id', auth, userNotExist, unFollow)
+router.put('/following/:id', auth, userNotExist, setFollowing)
+router.delete('/following/:id', auth, userNotExist, unFollowing)
 router.get('/following/:id', auth, userNotExist, getFollowing)
 router.get('/followers/:id', auth, userNotExist, getFollowers)
+router.get('/blocking', auth, getBlocking)
+router.put('/blocking/:id', auth, setBlocking)
+router.delete('/blocking/:id', auth, unBlocking)
 
 module.exports = router

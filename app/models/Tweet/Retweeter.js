@@ -1,9 +1,9 @@
 const { Schema, model } = require('mongoose')
 
-const likerSchema = new Schema({
+const retweeterSchema = new Schema({
     onwer_id: {
-        type: String,
-        unique: true
+        type: Schema.Types.ObjectId,
+        ref: 'Tweet'
     },
     list: {
         type: [{
@@ -13,4 +13,4 @@ const likerSchema = new Schema({
     }
 })
 
-module.exports = model('Liker', likerSchema)
+module.exports = model('Retweeter', retweeterSchema)

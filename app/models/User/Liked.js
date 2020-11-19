@@ -2,10 +2,10 @@ const { Schema, model } = require('mongoose')
 
 const likedSchema = new Schema({
     onwer_id: {
-        type: String,
-        unique: true
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
-    liked: {
+    list: {
         type: [{
             type: Schema.Types.ObjectId,
             ref: 'Tweet'

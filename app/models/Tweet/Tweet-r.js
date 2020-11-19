@@ -5,7 +5,7 @@ const tweet_rSchema = new Schema({
         type: String,
         unique: true
     },
-    tweets: {
+    list: {
         type: [{
             type: Schema.Types.ObjectId,
             ref: 'Tweet'

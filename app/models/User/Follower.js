@@ -2,8 +2,8 @@ const { Schema, model } = require('mongoose')
 
 const followerSchema = new Schema({
     onwer_id: {
-        type: String,
-        unique: true
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
     list: {
         type: [{

@@ -3,40 +3,26 @@ const Follower = require('../models/User/Follower')
 const Following = require('../models/User/Following')
 const Blocking = require('../models/User/Blocking')
 const Tweet_r = require('../models/Tweet/Tweet-r')
-const Liked = require('../models/Tweet/Liked')
+const Liked = require('../models/User/Liked')
 const jwt = require('jsonwebtoken')
 
 class UserCtl {
-    register = async (ctx) => {
-        const userinfo = ctx.request.body
-        const { userid, email, password } = userinfo
-        const onwer = { onwer_id: userid }
-        const ids = {
-            // 验证唯一性
-            tweets_r: await new Tweet_r(onwer).save(),
-            liked: await new Liked(onwer).save(),
-            followers: await new Follower(onwer).save(),
-            following: await new Following(onwer).save(),
-            blocking: await new Blocking(onwer).save(),
-        }
-        const apiDomain = 'http://localhost:3000'
-        const domain = 'https://example.com'
-        const new_user = {
-            userid,
-            email,
-            password,
-            following: ids.following._id,
-            followers: ids.followers._id,
-            blocking: ids.blocking._id,
-            tweets_url: `${apiDomain}/tweets_r/${ids.tweets_r._id}`,
-            liked_url: `${apiDomain}/likee/${ids.liked._id}`,
-            url: `${apiDomain}/users/${userid}`,
-            html_url: `${domain}/${userid}`
-        }
-        const user = await new User(new_user).save()
-        ctx.body = user
+    createUser = async (ctx) => {
+        const user = new User(ctx.request.body)
+        const onwer = { onwer_id: user._id }
+        // 验证唯一性?
+        user.tweets_r = await new Tweet_r(onwer).save()
+        user.liked_r = await new Liked(onwer).save()
+        user.followers_r = await new Follower(onwer).save()
+        user.following_r = await new Following(onwer).save()
+        user.blocking_r = await new Blocking(onwer).save()
+        user.save()
+        return user
     }
-
+    register = async (ctx) => {
+        await this.createUser(ctx)
+        ctx.status = 204
+    }
     login = async (ctx) => {
         const user = await User.findOne(ctx.request.body)
         if (!user) { ctx.throw(401, '用户名或密码错误') }
@@ -49,37 +35,74 @@ class UserCtl {
         ctx.body = user
     }
 
-    followUser = async (ctx) => {
-        const me = await User.findById(ctx.state.user._id).select('following').populate('following')
-        const one = await User.findById(ctx.params.id).select('followers').populate('followers')
-        if (!me.following.list.map(id => id.toString()).includes(ctx.params.id)) {
-            me.following.list.push(ctx.params.id)
-            one.followers.list.push(ctx.state.user._id)
-            await one.followers.save()
-            await me.following.save()
-        } else {
+    isInclude = async (list, id) => {
+        if (!list.map(_id => _id.toString()).includes(id)) {
+            return true
+        }
+        return false
+    }
+    updateCount = async (following_id, followers_id, following_count, followers_count) => {
+        await User.findByIdAndUpdate(following_id, { $set: { following_count } })
+        await User.findByIdAndUpdate(followers_id, { $set: { followers_count } })
+    }
+
+    setFollowing = async (ctx) => {
+        const following_r = await Following.findOne({ onwer_id: ctx.state.user._id })
+        const followers_r = await Follower.findOne({ onwer_id: ctx.params.id })
+        const notFollowing = await this.isInclude(following_r.list, ctx.params.id)
+        const notFollowers = await this.isInclude(followers_r.list, ctx.state.user._id)
+        if (!notFollowing && !notFollowers) {
             ctx.throw(409, '已关注该用户')
         }
+        if (notFollowing) {
+            following_r.list.push(ctx.params.id)
+            await following_r.save()
+        }
+        if (notFollowers) {
+            followers_r.list.push(ctx.state.user._id)
+            await followers_r.save()
+        }
+        await this.updateCount(ctx.state.user._id, ctx.params.id, following_r.list.length, followers_r.list.length)
         ctx.status = 204
     }
-    unFollow = async (ctx) => {
-        const { following } = await User.findById(ctx.state.user._id).select('following').populate('following')
-        const { followers } = await User.findById(ctx.params.id).select('followers').populate('followers')
-        following.list = following.list.filter(id => id.toString() !== ctx.params.id)
-        followers.list = followers.list.filter(id => id.toString() !== ctx.state.user._id)
-        await following.save()
-        await followers.save()
-        ctx.body = 204
+    unFollowing = async (ctx) => {
+        // 需要check 一下
+        const following_r = await Following.findOne({ onwer_id: ctx.state.user._id })
+        const followers_r = await Follower.findOne({ onwer_id: ctx.params.id })
+        following_r.list = following_r.list.filter(id => id.toString() !== ctx.params.id)
+        followers_r.list = followers_r.list.filter(id => id.toString() !== ctx.state.user._id)
+        await following_r.save()
+        await followers_r.save()
+        await this.updateCount(ctx.state.user._id, ctx.params.id, following_r.list.length, followers_r.list.length)
+        ctx.status = 204
     }
     getFollowing = async (ctx) => {
-        const { following: following_id } = await User.findById(ctx.params.id).select('following')
-        const following = await Following.findById(following_id).populate('list')
-        ctx.body = following
+        const following_r = await Following.findOne({ onwer_id: ctx.params.id }).populate('list')
+        ctx.body = following_r
     }
     getFollowers = async (ctx) => {
-        const { followers: followers_id } = await User.findById(ctx.params.id).select('followers')
-        const followers = await Follower.findById(followers_id).populate('list')
-        ctx.body = followers
+        const followers_r = await Follower.findOne({ onwer_id: ctx.params.id }).populate('list')
+        ctx.body = followers_r
+    }
+    getBlocking = async (ctx) => {
+        const blocking_r = await Blocking.findOne({ onwer_id: ctx.state.user._id }).populate('list')
+        ctx.body = blocking_r
+    }
+    setBlocking = async (ctx) => {
+        const blocking_r = await Blocking.findOne({ onwer_id: ctx.state.user._id })
+        const notBlocking = await this.isInclude(blocking_r.list, ctx.params.id)
+        if (!notBlocking) {
+            ctx.throw(409, '已拉黑用户')
+        }
+        blocking_r.list.push(ctx.params.id)
+        blocking_r.save()
+        ctx.status = 204
+    }
+    unBlocking = async (ctx) => {
+        const blocking_r = await Blocking.findOne({ onwer_id: ctx.state.user._id })
+        blocking_r.list = blocking_r.list.filter(id => id.toString() !== ctx.params.id)
+        blocking_r.save()
+        ctx.body = 204
     }
 }
 

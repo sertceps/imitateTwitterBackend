@@ -2,10 +2,10 @@ const { Schema, model } = require('mongoose')
 
 const commentSchema = new Schema({
     onwer_id: {
-        type: String,
-        unique: true
+        type: Schema.Types.ObjectId,
+        ref: 'Tweet'
     },
-    follower: {
+    list: {
         type: [{
             type: Schema.Types.ObjectId,
             ref: 'Tweet'

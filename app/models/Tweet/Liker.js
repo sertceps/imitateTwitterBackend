@@ -1,9 +1,9 @@
 const { Schema, model } = require('mongoose')
 
-const blockingSchema = new Schema({
+const likerSchema = new Schema({
     onwer_id: {
         type: Schema.Types.ObjectId,
-        ref:'User'
+        ref: 'Tweet'
     },
     list: {
         type: [{
@@ -13,4 +13,4 @@ const blockingSchema = new Schema({
     }
 })
 
-module.exports = model('Blocking', blockingSchema)
+module.exports = model('Liker', likerSchema)
