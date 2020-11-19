@@ -3,7 +3,8 @@ mongoose.connect('mongodb://localhost/twitter', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    autoIndex: false
+    autoIndex: false,
+    useFindAndModify: false
 });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

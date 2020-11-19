@@ -51,6 +51,10 @@ const tweetSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Comment'
     },
+    is_comment: {
+        type: Boolean,
+        default: false
+    },
     is_del: {
         type: Boolean,
         default: false

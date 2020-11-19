@@ -104,6 +104,7 @@ class UserCtl {
         blocking_r.save()
         ctx.body = 204
     }
+
 }
 
 module.exports = new UserCtl()
