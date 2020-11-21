@@ -104,6 +104,16 @@ class UserCtl {
         blocking_r.save()
         ctx.body = 204
     }
+    searchUser = async (ctx) => {
+        const page = Math.max(Number(ctx.query.page), 1)
+        const skipPage = page == NaN ? 0 : (page - 1) * 20
+        const q = new RegExp(ctx.query.q)
+        const users = await User
+            .find({ $or: [{ username: q }, { userid: q }] })
+            .limit(20).skip(skipPage)
+        ctx.body = users
+
+    }
 
 }
 

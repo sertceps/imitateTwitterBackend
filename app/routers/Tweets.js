@@ -4,6 +4,7 @@ const { auth } = require('../middleware/User')
 const {
     setTweet,
     getTweet,
+    getUserTweets,
     delTweet,
     setComment,
     getComment,
@@ -15,10 +16,12 @@ const {
     setRetweet,
     getRetweeters,
     delRetweeter,
+    searchTweet,
 } = require('../controllers/Tweet.js')
 
 router.post('/tweets', auth, setTweet)
-router.get('/tweets/:id', auth, getTweet)
+router.get('/tweets/users/:id', auth, getUserTweets)
+router.get('/tweets/:id', getTweet)
 router.del('/tweets/:id', auth, delTweet)
 router.post('/retweets/:id', auth, setRetweet)
 router.delete('/retweets/:id', auth, delRetweeter)
@@ -30,6 +33,6 @@ router.put('/liked/:id', auth, setLiked)
 router.delete('/liked/:id', auth, unLiked)
 router.get('/likers/:id', getLikers)
 router.get('/liked', auth, getLiked)
-
+router.get('/search/tweets', auth, searchTweet)
 
 module.exports = router

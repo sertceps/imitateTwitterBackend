@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken')
 const Tweet = require('../models/Tweet/Tweet')
 const Tweet_r = require('../models/Tweet/Tweet-r')
-const User = require('../models/User/User')
 const Comment = require('../models/Tweet/Comment')
 const Liker = require('../models/Tweet/Liker')
 const Retweeter = require('../models/Tweet/Retweeter')
@@ -39,6 +38,10 @@ class TweetCtl {
         ctx.status = 204
     }
     getTweet = async (ctx) => {
+        const tweet = await Tweet.findById(ctx.params.id)
+        ctx.body = tweet
+    }
+    getUserTweets = async (ctx) => {
         // 需要中间件check 一下
         const tweets_r = await Tweet_r.findOne({ onwer_id: ctx.params.id }).populate('list')
         ctx.body = tweets_r
@@ -132,5 +135,19 @@ class TweetCtl {
         const retweeters = await Retweeter.findOne({ onwer_id: ctx.params.id }).populate('list')
         ctx.body = retweeters
     }
+
+    // 搜索
+
+    searchTweet = async (ctx) => {
+        const page = Math.max(Number(ctx.query.page), 1)
+        const skipPage = page == NaN ? 0 : (page - 1) * 20
+        const q = new RegExp(ctx.query.q)
+        const tweets = await Tweet
+            .find({ 'content.text': q })
+            .limit(20).skip(skipPage)
+        ctx.body = tweets
+    }
+
 }
+
 module.exports = new TweetCtl()

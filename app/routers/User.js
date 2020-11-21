@@ -12,6 +12,7 @@ const {
     getBlocking,
     setBlocking,
     unBlocking,
+    searchUser,
 } = require('../controllers/User')
 
 router.post('/users', userEmailExisted, register)
@@ -24,5 +25,6 @@ router.get('/followers/:id', auth, userNotExist, getFollowers)
 router.get('/blocking', auth, getBlocking)
 router.put('/blocking/:id', auth, setBlocking)
 router.delete('/blocking/:id', auth, unBlocking)
+router.get('/search/users', searchUser)
 
 module.exports = router
