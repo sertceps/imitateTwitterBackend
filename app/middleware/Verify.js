@@ -23,7 +23,7 @@ module.exports = {
         await next()
     },
     useridNotExist: async (ctx, next) => {
-        const user = await User.findOne({ userid: ctx.params.userid })
+        const user = await User.findOne({ userid: ctx.params.userid || ctx.request.body.userid })
         if (!user) {
             ctx.throw(404, '用户不存在')
         }

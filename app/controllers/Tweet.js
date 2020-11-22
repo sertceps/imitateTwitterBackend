@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken')
 const Tweet = require('../models/Tweet/Tweet')
 const Tweet_r = require('../models/Tweet/Tweet-r')
 const Comment = require('../models/Tweet/Comment')

@@ -5,9 +5,9 @@ const Blocking = require('../models/User/Blocking')
 const Tweet_r = require('../models/Tweet/Tweet-r')
 const Liked = require('../models/User/Liked')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 class UserCtl {
     createUser = async (value) => {
-        // const user = new User(ctx.request.body)
         const user = new User(value)
         const onwer = { onwer_id: user._id }
         // 验证唯一性?
@@ -20,12 +20,16 @@ class UserCtl {
         return user
     }
     register = async (ctx) => {
+        const salt = await bcrypt.genSalt(10)
+        const password = await bcrypt.hash(ctx.request.body.password, salt)
+        ctx.request.body.password = password
         await this.createUser(ctx.request.body)
         ctx.status = 204
     }
     login = async (ctx) => {
-        const user = await User.findOne(ctx.request.body)
-        if (!user) { ctx.throw(401, '用户名或密码错误') }
+        const user = await User.findOne({ userid: ctx.request.body.userid }).select('+password')
+        const compare = await bcrypt.compare(ctx.request.body.password, user.password)
+        if (!compare) { ctx.throw(401, '用户名或密码错误') }
         const { _id, userid } = user
         const token = jwt.sign({ _id, userid }, 'secretKey')
         ctx.body = { token }
