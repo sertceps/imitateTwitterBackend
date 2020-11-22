@@ -5,10 +5,10 @@ const Blocking = require('../models/User/Blocking')
 const Tweet_r = require('../models/Tweet/Tweet-r')
 const Liked = require('../models/User/Liked')
 const jwt = require('jsonwebtoken')
-
 class UserCtl {
-    createUser = async (ctx) => {
-        const user = new User(ctx.request.body)
+    createUser = async (value) => {
+        // const user = new User(ctx.request.body)
+        const user = new User(value)
         const onwer = { onwer_id: user._id }
         // 验证唯一性?
         user.tweets_r = await new Tweet_r(onwer).save()
@@ -20,7 +20,7 @@ class UserCtl {
         return user
     }
     register = async (ctx) => {
-        await this.createUser(ctx)
+        await this.createUser(ctx.request.body)
         ctx.status = 204
     }
     login = async (ctx) => {

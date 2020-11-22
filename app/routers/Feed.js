@@ -1,10 +1,10 @@
 const Router = require('koa-router')
 const router = new Router()
 const {
-    getAll,
+    getAllTweets,
 } = require('../controllers/Feed')
 
-router.get('/feeds', getAll)
+router.get('/feeds', getAllTweets)
 
 
 
