@@ -1,7 +1,7 @@
 const Router = require('koa-router')
 const router = new Router()
 const { auth } = require('../middleware/Verify')
-const { idValidator, pageValidator, contentValidator, } = require('../middleware/Validators')
+const { idValidator, pageValidator, contentValidator, } = require('../middlewares/Validators')
 const {
     setTweet,
     getTweet,

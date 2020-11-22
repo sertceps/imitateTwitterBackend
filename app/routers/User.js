@@ -1,7 +1,7 @@
 const Router = require('koa-router')
 const router = new Router()
-const { auth, userEmailExisted, userNotExist, useridNotExist } = require('../middleware/Verify')
-const { registerValidator, loginValidator, idValidator, pageValidator, } = require('../middleware/Validators')
+const { auth, userEmailExisted, userNotExist, useridNotExist } = require('../middlewares/Verify')
+const { registerValidator, loginValidator, idValidator, pageValidator, } = require('../middlewares/Validators')
 const {
     register,
     login,
