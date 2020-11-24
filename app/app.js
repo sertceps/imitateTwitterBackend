@@ -1,4 +1,5 @@
 const Kao = require('koa')
+const cors = require('@koa/cors')
 const bodyParser = require('koa-bodyparser')
 const app = new Kao()
 const initRouter = require('./routers/initRouter')
@@ -18,6 +19,7 @@ app.use(async (ctx, next) => {
 
 app
     .use(bodyParser())
+    .use(cors())
 
 initRouter(app)
 app.listen(3000)
