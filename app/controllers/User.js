@@ -30,9 +30,13 @@ class UserCtl {
         const user = await User.findOne({ userid: ctx.request.body.userid }).select('+password')
         const compare = await bcrypt.compare(ctx.request.body.password, user.password)
         if (!compare) { ctx.throw(401, '用户名或密码错误') }
-        const { _id, userid } = user
+        const { _id, userid, detail_info } = user
         const token = jwt.sign({ _id, userid }, 'secretKey')
-        ctx.body = { token }
+        ctx.body = { token, _id, userid, detail_info }
+    }
+    getLoginUser = async (ctx) => {
+        const user = await User.findById(ctx.state.user._id)
+        ctx.body = user
     }
     getUser = async (ctx) => {
         const user = await User.findOne({ userid: ctx.params.userid })

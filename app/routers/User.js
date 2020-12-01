@@ -1,10 +1,11 @@
 const Router = require('koa-router')
 const router = new Router()
-const { auth, userEmailExisted, userNotExist, useridNotExist } = require('../middlewares/Verify')
+const { auth, userEmailExisted, userNotExist, useridNotExist, useridChecked } = require('../middlewares/Verify')
 const { registerValidator, loginValidator, idValidator, pageValidator, } = require('../middlewares/Validators')
 const {
     register,
     login,
+    getLoginUser,
     getUser,
     setFollowing,
     unFollowing,
@@ -17,7 +18,8 @@ const {
 } = require('../controllers/User')
 
 router.post('/users', userEmailExisted, registerValidator, register)
-router.post('/login', loginValidator, useridNotExist, login)
+router.post('/login', loginValidator, useridChecked, login)
+router.get('/login', auth, getLoginUser)
 router.get('/users/:userid', useridNotExist, getUser)
 router.put('/following/:id', auth, idValidator, userNotExist, setFollowing)
 router.delete('/following/:id', auth, idValidator, userNotExist, unFollowing)
