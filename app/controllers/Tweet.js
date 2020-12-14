@@ -101,7 +101,7 @@ class TweetCtl {
         ctx.status = 204
     }
     getLiked = async (ctx) => {
-        const liked = await Liked.findOne({ onwer_id: ctx.state.user._id })
+        const liked = await Liked.findOne({ onwer_id: ctx.state.user._id }).populate('list')
         ctx.body = liked
     }
     getLikers = async (ctx) => {

@@ -26,11 +26,11 @@ const userSchema = new Schema({
     detail_info: {
         avatar_url: {
             type: String,
-            default: '/images/avatars/default.jpg'
+            default: 'http://localhost:3000/images/avatars/default.jpg'
         },
         background_url: {
             type: String,
-            default: '/images/backgrounds/default.jpg'
+            default: 'http://localhost:3000/images/backgrounds/default.jpg'
         },
         description: {
             type: String,
